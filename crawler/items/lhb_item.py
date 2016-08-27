@@ -8,7 +8,11 @@
 import scrapy
 
 
-class StockItem(scrapy.Item):
+class LhbItem(scrapy.Item):
     # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+    end_date = scrapy.Field()
+    reason = scrapy.Field()
+    change_percent = scrapy.Field()
+    buy_value = scrapy.Field()
+    sell_value = scrapy.Field()
+    net_value = scrapy.Field()
