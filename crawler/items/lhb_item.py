@@ -10,6 +10,7 @@ import scrapy
 
 class LhbItem(scrapy.Item):
     # define the fields for your item here like:
+    stock_id = scrapy.Field()
     end_date = scrapy.Field()
     reason = scrapy.Field()
     change_percent = scrapy.Field()

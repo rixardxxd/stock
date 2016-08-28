@@ -1,5 +1,6 @@
 import json
 import logging
+import re
 
 from scrapy import Spider
 
@@ -20,7 +21,7 @@ class LhbSpider(Spider):
         }
     }
     start_urls = start_urls
-    # start_urls = [
+    #start_urls = [
     #    'http://stock.jrj.com.cn/action/lhb/getStockListDetail.jspa?vname=stockListDetail&stockcode=300033&infoClsType=0&page=1&size=100&order=desc&sort=endDate',
     #]
 
@@ -35,6 +36,8 @@ class LhbSpider(Spider):
         -------
 
         """
+        stock_id = re.search(r'stockcode=(\d+)&', response.url).group(1)
+        print(stock_id)
         content_str = response.body_as_unicode()
         # remove the unwanted string in the beginning of the file
         content_str = content_str.split("var stockListDetail=", 1)[1]
@@ -48,6 +51,7 @@ class LhbSpider(Spider):
         print(content)
         for item in content['data']:
             lhb_item = LhbItem()
+            lhb_item['stock_id'] = stock_id
             lhb_item['end_date'] = item[0]
             lhb_item['reason'] = item[1]
             lhb_item['change_percent'] = item[2]

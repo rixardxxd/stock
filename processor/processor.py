@@ -16,7 +16,7 @@ from json.decoder import JSONDecodeError
 
 from config.config_parser_util import ConfigParserUtil
 from my_scrapy_redis.connection import get_redis
-from utils import get_requests_session
+from utils.request_util import get_requests_session
 
 
 class Processor(object):

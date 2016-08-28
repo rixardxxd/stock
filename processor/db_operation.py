@@ -1,9 +1,9 @@
 import sys
 
 import mysql.connector
-from util.logger_util import get_logger
+from utils.logger_util import get_logger
 
-from utils import get_current_timestamp
+from utils.time_util import get_current_timestamp
 
 
 class MySQLdb:
