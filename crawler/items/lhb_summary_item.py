@@ -8,7 +8,7 @@
 import scrapy
 
 
-class LhbItem(scrapy.Item):
+class LhbSummaryItem(scrapy.Item):
     # define the fields for your item here like:
     stock_id = scrapy.Field()
     end_date = scrapy.Field()

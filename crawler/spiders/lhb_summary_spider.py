@@ -4,17 +4,17 @@ import re
 
 from scrapy import Spider
 
-from crawler.items.lhb_item import LhbItem
+from crawler.items.lhb_summary_item import LhbSummaryItem
 from utils.url_util import start_urls
 
-logger = logging.getLogger("LhbSpider")
+logger = logging.getLogger("LhbSummarySpider")
 
 
-class LhbSpider(Spider):
+class LhbSummarySpider(Spider):
     """
     It's the class to crawl cinema info from mtime.com
     """
-    name = "lhb"
+    name = "lhb_summary"
     custom_settings = {
         'ITEM_PIPELINES': {
             'my_scrapy_redis.pipelines.RedisPipeline': 400
@@ -50,7 +50,7 @@ class LhbSpider(Spider):
             return
         print(content)
         for item in content['data']:
-            lhb_item = LhbItem()
+            lhb_item = LhbSummaryItem()
             lhb_item['stock_id'] = stock_id
             lhb_item['end_date'] = item[0]
             lhb_item['reason'] = item[1]
