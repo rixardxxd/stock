@@ -11,7 +11,7 @@ from processor.processor import Processor
 from utils.time_util import get_current_timestamp
 
 
-class LhbProcessor(Processor):
+class LhbSummaryProcessor(Processor):
     def __init__(self):
         super().__init__()
         self.parse_config()
@@ -85,5 +85,5 @@ class LhbProcessor(Processor):
 
 
 if __name__ == '__main__':
-    imax_processor = LhbProcessor()
+    imax_processor = LhbSummaryProcessor()
     imax_processor.run()
