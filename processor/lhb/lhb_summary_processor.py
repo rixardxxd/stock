@@ -49,8 +49,11 @@ class LhbSummaryProcessor(Processor):
                    item['sell_value'],
                    item['net_value'],
                    get_current_timestamp("Asia/Shanghai"))
-            self.database_instance.insert_summary_info(row)
-
+            try:
+                self.database_instance.insert_summary_info(row)
+            except Exception as e:
+                self.logger.info(item)
+                self.logger.error(e)
     def process_items(self):
 
         """

@@ -1,7 +1,8 @@
 """
-This modules handles imax MySQL database operations.
+This modules handles LHB MySQL database operations.
 """
 from processor.db_operation import MySQLdb
+import mysql
 
 
 class LhbDB(MySQLdb):
@@ -41,3 +42,45 @@ class LhbDB(MySQLdb):
                "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
         return self.insert_data(sql, item)
 
+    def select_summary_info_dfcf_by_date(self, start_date, end_date):
+        """
+        Pass in start_date and end_date like 'YYYY-MM-DD'
+        Parameters
+        ----------
+        start_date
+        end_date
+
+        Returns
+        -------
+
+        """
+        sql = ("SELECT * FROM lhb_summary_dfcf "
+               "WHERE lhb_date >= '{0}' and lhb_date <= '{1}'".format(start_date, end_date))
+        try:
+            self.cursor.execute(sql)
+            rows = self.cursor.fetchall()
+            return rows
+        except mysql.connector.Error as err:
+            self.logger.exception(err)
+            return False
+
+    def select_summary_info_dfcf_by_stock_id(self, stock_id):
+        """
+        Pass in stock_id'
+        Parameters
+        ----------
+        stock_id
+
+        Returns
+        -------
+
+        """
+        sql = ("SELECT * FROM lhb_summary_dfcf "
+               "WHERE stock_id = {0}".format(stock_id))
+        try:
+            self.cursor.execute(sql)
+            rows = self.cursor.fetchall()
+            return rows
+        except mysql.connector.Error as err:
+            self.logger.exception(err)
+            return False

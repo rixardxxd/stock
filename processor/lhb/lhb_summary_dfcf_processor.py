@@ -5,6 +5,7 @@ from __future__ import print_function, unicode_literals
 
 import logging
 import time
+import decimal
 
 from processor.lhb.lhb_db_operation import LhbDB
 from processor.processor import Processor
@@ -44,20 +45,25 @@ class LhbSummaryDfcfProcessor(Processor):
             row = (item['lhb_date'],
                    item['stock_id'],
                    item['stock_name'],
-                   item['close_price'],
-                   item['change_percent'],
-                   item['lhb_net_value'],
-                   item['lhb_buy_value'],
-                   item['lhb_sell_value'],
-                   item['lhb_total_value'],
-                   item['trade_amount'],
-                   item['net_value_percent'],
-                   item['total_value_percent'],
-                   item['turnover_ratio'],
-                   item['market_value'],
+                   item['close_price'] if item['close_price'] != '' else -1,
+                   decimal.Decimal("%.2f" % float(item['change_percent'])) if item['change_percent'] != '' else -1,
+                   item['lhb_net_value'] if item['lhb_net_value'] != '' else -1,
+                   item['lhb_buy_value'] if item['lhb_buy_value'] != '' else -1,
+                   item['lhb_sell_value'] if item['lhb_sell_value'] != '' else -1,
+                   item['lhb_total_value'] if item['lhb_total_value'] != '' else -1,
+                   item['trade_amount'] if item['trade_amount'] != '' else -1,
+                   decimal.Decimal("%.2f" % float(item['net_value_percent'])) if item['net_value_percent'] != '' else -1,
+                   decimal.Decimal("%.2f" % float(item['total_value_percent'])) if item['total_value_percent'] != '' else -1,
+                   decimal.Decimal("%.2f" % float(item['turnover_ratio'])) if item['turnover_ratio'] != '' else -1,
+                   item['market_value'] if item['market_value'] != '' else -1,
                    item['reason'].encode('utf-8'),
                    get_current_timestamp("Asia/Shanghai"))
-            self.database_instance.insert_summary_info_dfcf(row)
+            try:
+                self.database_instance.insert_summary_info_dfcf(row)
+            except Exception as e:
+                print(item)
+                self.logger.info(item)
+                self.logger.error(e)
 
     def process_items(self):
 

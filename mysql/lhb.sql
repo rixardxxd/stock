@@ -38,18 +38,18 @@ CREATE TABLE `lhb_summary_dfcf` (
   `stock_id` char(6) DEFAULT NULL,
   `stock_name` char(20) DEFAULT NULL,
   `close_price` decimal(5,2) DEFAULT NULL,
-  `change_percent` decimal(5,2) DEFAULT NULL,
+  `change_percent` decimal(10,2) DEFAULT NULL,
   `lhb_net_value` decimal(15,2) DEFAULT NULL,
   `lhb_buy_value` decimal(15,2) DEFAULT NULL,
   `lhb_sell_value` decimal(15,2) DEFAULT NULL,
   `lhb_total_value` decimal(15,2) DEFAULT NULL,
   `trade_amount` decimal(15,2) DEFAULT NULL,
-  `net_value_percent` decimal(5,2) DEFAULT NULL,
-  `total_value_percent` decimal(5,2) DEFAULT NULL,
-  `turnover_ratio` decimal(5,2) DEFAULT NULL,
+  `net_value_percent` decimal(10,2) DEFAULT NULL,
+  `total_value_percent` decimal(10,2) DEFAULT NULL,
+  `turnover_ratio` decimal(10,2) DEFAULT NULL,
   `market_value` decimal(15,2) DEFAULT NULL,
   `reason` varchar(100) DEFAULT NULL,
   `process_date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `stock_id_lhb_date_reason` (`stock_id`,`lhb_date`,`reason`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=79840 DEFAULT CHARSET=utf8;
