@@ -1,0 +1,23 @@
+# Please add the following line to .zshrc (remove leading #)
+# source ~/Palm/Engineering/stock/.zshrc_stock
+
+# Build
+
+fucntion go_stock() {
+  cd ~/Palm/Engineering/stock
+}
+
+function docker_build_lhb_dfcf_crawler_processor() {
+  go_stock
+  docker build -f dockerfile/lhb_dfcf_crawler_processor/Dockerfile -t index.alauda.cn/palmorg/lhb_dfcf_crawler_processor .
+  echo "docker push index.alauda.cn/palmorg/lhb_dfcf_crawler_processor" | tr -d "\n" | pbcopy
+  echo "Copied to clipboard. Please push to alauda.cn"
+}
+
+# Run
+
+function docker_run_lhb_dfcf_crawler_processor() {
+  go_stock
+  docker run --name lhb_dfcf_crawler_processor -it --rm --link redis:redis --link mysql:mysql -e ENV=local index.alauda.cn/palmorg/lhb_dfcf_crawler_processor
+}
+

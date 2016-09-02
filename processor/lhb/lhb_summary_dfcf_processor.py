@@ -46,7 +46,7 @@ class LhbSummaryDfcfProcessor(Processor):
                    item['stock_id'],
                    item['stock_name'],
                    item['close_price'] if item['close_price'] != '' else -1,
-                   decimal.Decimal("%.2f" % float(item['change_percent'])) if item['change_percent'] != '' else -1,
+                   decimal.Decimal("%.2f" % float(item['change_percent'])) if item['change_percent'] != '' else -10000,
                    item['lhb_net_value'] if item['lhb_net_value'] != '' else -1,
                    item['lhb_buy_value'] if item['lhb_buy_value'] != '' else -1,
                    item['lhb_sell_value'] if item['lhb_sell_value'] != '' else -1,

@@ -1,0 +1,9 @@
+lhb-dfcf-crawler-processor:
+  environment:
+  - ENV=aws
+  ports:
+  - "5151"
+  image: index.alauda.cn/palmorg/lhb_dfcf_crawler_processor:latest
+  number: 1
+  size: M
+
