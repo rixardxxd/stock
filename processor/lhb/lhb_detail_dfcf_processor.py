@@ -5,7 +5,7 @@ from __future__ import print_function, unicode_literals
 
 import logging
 import time
-import decimal
+import mysql
 
 from processor.lhb.lhb_db_operation import LhbDB
 from processor.processor import Processor
@@ -57,7 +57,7 @@ class LhbDetailDfcfProcessor(Processor):
                    get_current_timestamp("Asia/Shanghai"))
             try:
                 self.database_instance.insert_detail_info_dfcf(row)
-            except Exception as e:
+            except mysql.connector.errors.IntegrityError as e:
                 print(item)
                 self.logger.info(item)
                 self.logger.error(e)
