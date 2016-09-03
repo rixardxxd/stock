@@ -29,7 +29,7 @@ CONCURRENT_REQUESTS = 16
 # Log
 # default is False, still display log on console
 LOG_STDOUT = True
-LOG_LEVEL = "INFO"
+LOG_LEVEL = "WARN"
 
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
