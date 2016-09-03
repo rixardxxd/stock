@@ -24,7 +24,6 @@ class LhbSummaryDfcfItem(scrapy.Item):
     net_value_percent = scrapy.Field()       # (lhb_net_value / trade_amount) * 100%
     total_value_percent = scrapy.Field()     # (lhb_total_value / trade_amount) * 100%
     turnover_ratio = scrapy.Field()
-    market_value = scrapy.Field()
     reason = scrapy.Field()
 
 

@@ -12,12 +12,12 @@ from processor.processor import Processor
 from utils.time_util import get_current_timestamp
 
 
-class LhbSummaryDfcfProcessor(Processor):
+class LhbDetailDfcfProcessor(Processor):
     def __init__(self):
         super().__init__()
         self.parse_config()
         logging.basicConfig(format='%(asctime)s %(message)s')
-        self.logger = logging.getLogger('lhb_summary_dfcf_processor')
+        self.logger = logging.getLogger('lhb_detail_dfcf_processor')
 
     def parse_config(self):
         """
@@ -27,10 +27,10 @@ class LhbSummaryDfcfProcessor(Processor):
         None
         """
         super().parse_config()
-        self.redis_key = self.config_parser.get("lhb", "LHB_SUMMARY_DFCF_REDIS_KEY")
+        self.redis_key = self.config_parser.get("lhb", "LHB_DETAIL_DFCF_REDIS_KEY")
         self.mysql_database = self.config_parser.get("lhb", "MYSQL_DATABASE")
 
-    def insert_lhb_summary_table(self, items):
+    def insert_lhb_detail_table(self, items):
         """
         This method inserts a list of items into table cinema_info
         Parameters
@@ -45,20 +45,18 @@ class LhbSummaryDfcfProcessor(Processor):
             row = (item['lhb_date'],
                    item['stock_id'],
                    item['stock_name'],
-                   item['close_price'] if item['close_price'] != '' else -1,
-                   decimal.Decimal("%.2f" % float(item['change_percent'])) if item['change_percent'] != '' else -10000,
-                   item['lhb_net_value'] if item['lhb_net_value'] != '' else 0,
-                   item['lhb_buy_value'] if item['lhb_buy_value'] != '' else 0,
-                   item['lhb_sell_value'] if item['lhb_sell_value'] != '' else 0,
-                   item['lhb_total_value'] if item['lhb_total_value'] != '' else 0,
-                   item['trade_amount'] if item['trade_amount'] != '' else -1,
-                   decimal.Decimal("%.2f" % float(item['net_value_percent'])) if item['net_value_percent'] != '' else -1,
-                   decimal.Decimal("%.2f" % float(item['total_value_percent'])) if item['total_value_percent'] != '' else -1,
-                   decimal.Decimal("%.2f" % float(item['turnover_ratio'])) if item['turnover_ratio'] != '' else -1,
                    item['reason'].encode('utf-8'),
+                   item['yyb_name'].encode('utf-8'),
+                   item['buy_or_sell'],
+                   item['buy_or_sell_order'],
+                   item['buy_value'] if item['buy_value'] != '-' else 0,
+                   item['buy_value_percent'] if item['buy_value_percent'] != '-' else 0,
+                   item['sell_value'] if item['sell_value'] != '-' else 0,
+                   item['sell_value_percent'] if item['sell_value_percent'] != '-' else 0,
+                   item['net_value'],
                    get_current_timestamp("Asia/Shanghai"))
             try:
-                self.database_instance.insert_summary_info_dfcf(row)
+                self.database_instance.insert_detail_info_dfcf(row)
             except Exception as e:
                 print(item)
                 self.logger.info(item)
@@ -77,7 +75,7 @@ class LhbSummaryDfcfProcessor(Processor):
             if len(items) == 0:
                 time.sleep(self.sleep_secs)
                 continue
-            self.insert_lhb_summary_table(items)
+            self.insert_lhb_detail_table(items)
             processed_item_number += len(items)
 
         self.database_instance.close_db()
@@ -98,5 +96,5 @@ class LhbSummaryDfcfProcessor(Processor):
 
 
 if __name__ == '__main__':
-    lhb_processor = LhbSummaryDfcfProcessor()
+    lhb_processor = LhbDetailDfcfProcessor()
     lhb_processor.run()
