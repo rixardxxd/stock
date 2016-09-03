@@ -18,4 +18,4 @@ ADD processor stock/processor
 EXPOSE 5000
 
 # Run scrapy
-CMD cd stock; scrapy crawl lhb_summary_dfcf && python -m processor.lhb.lhb_summary_dfcf_processor
+CMD cd stock; python3 -m processor.lhb.lhb_summary_dfcf_processor

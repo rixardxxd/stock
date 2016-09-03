@@ -10,6 +10,7 @@ import decimal
 from processor.lhb.lhb_db_operation import LhbDB
 from processor.processor import Processor
 from utils.time_util import get_current_timestamp
+from utils.logger_util import get_logger
 
 
 class LhbSummaryDfcfProcessor(Processor):
@@ -17,7 +18,7 @@ class LhbSummaryDfcfProcessor(Processor):
         super().__init__()
         self.parse_config()
         logging.basicConfig(format='%(asctime)s %(message)s')
-        self.logger = logging.getLogger('lhb_summary_dfcf_processor')
+        self.logger = get_logger('lhb_summary_dfcf_processor.log')
 
     def parse_config(self):
         """
