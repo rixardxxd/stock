@@ -1,9 +1,10 @@
 import json
 import logging
 import re
+
 from scrapy import Spider, Request
+
 from crawler.items.lhb_detail_dfcf_item import LhbDetailDfcfItem
-from utils.url_dfcf_util import start_urls
 
 logger = logging.getLogger("LhbDetailDfcfSpider")
 
@@ -20,9 +21,8 @@ class LhbDetailDfcfSpider(Spider):
     }
     # start_urls = start_urls
     start_urls = [
-       'http://data.eastmoney.com/DataCenter_V3/stock2016/TradeDetail/pagesize=200,page=1,sortRule=-1,sortType=,startDate=2015-07-06,endDate=2015-07-06,gpfw=0,js=var%20data_tab_1.html?rt=24545276',
+        'http://data.eastmoney.com/DataCenter_V3/stock2016/TradeDetail/pagesize=200,page=1,sortRule=-1,sortType=,startDate=2015-07-06,endDate=2015-07-06,gpfw=0,js=var%20data_tab_1.html?rt=24545276',
     ]
-
 
     def parse(self, response):
         """
@@ -80,7 +80,6 @@ class LhbDetailDfcfSpider(Spider):
         for url in new_url_set:
             yield Request(url, callback=self.parse_detail)
 
-
     def parse_detail(self, response):
         """
         It's the method to parse the detail lhb info
@@ -94,7 +93,7 @@ class LhbDetailDfcfSpider(Spider):
 
         """
         # 获取日期与股票编号
-        group =  re.search(r'lhb,(\d{4}-\d{2}-\d{2}),(\d+).html', response.url)
+        group = re.search(r'lhb,(\d{4}-\d{2}-\d{2}),(\d+).html', response.url)
         lhb_date = group.group(1)
         stock_id = group.group(2)
 
@@ -131,9 +130,9 @@ class LhbDetailDfcfSpider(Spider):
                 lhb_detail_item['buy_or_sell_order'] = tr.xpath(".//td[1]/text()").extract()[0]
                 lhb_detail_item['yyb_name'] = tr.xpath(".//td[2]/div/a/text()").extract()[0]
                 lhb_detail_item['buy_value'] = tr.xpath(".//td[3]/text()").extract()[0]
-                lhb_detail_item['buy_value_percent'] = tr.xpath(".//td[4]/text()").extract()[0]
+                lhb_detail_item['buy_value_percent'] = tr.xpath(".//td[4]/text()").extract()[0].replace('%', '')
                 lhb_detail_item['sell_value'] = tr.xpath(".//td[5]/text()").extract()[0]
-                lhb_detail_item['sell_value_percent'] = tr.xpath(".//td[6]/text()").extract()[0]
+                lhb_detail_item['sell_value_percent'] = tr.xpath(".//td[6]/text()").extract()[0].replace('%', '')
                 lhb_detail_item['net_value'] = tr.xpath(".//td[7]/text()").extract()[0]
                 yield lhb_detail_item
 
@@ -150,28 +149,11 @@ class LhbDetailDfcfSpider(Spider):
                 lhb_detail_item['buy_or_sell_order'] = tr.xpath(".//td[1]/text()").extract()[0]
                 lhb_detail_item['yyb_name'] = tr.xpath(".//td[2]/div/a/text()").extract()[0]
                 lhb_detail_item['buy_value'] = tr.xpath(".//td[3]/text()").extract()[0]
-                lhb_detail_item['buy_value_percent'] = tr.xpath(".//td[4]/text()").extract()[0]
+                lhb_detail_item['buy_value_percent'] = tr.xpath(".//td[4]/text()").extract()[0].replace('%', '')
                 lhb_detail_item['sell_value'] = tr.xpath(".//td[5]/text()").extract()[0]
-                lhb_detail_item['sell_value_percent'] = tr.xpath(".//td[6]/text()").extract()[0]
+                lhb_detail_item['sell_value_percent'] = tr.xpath(".//td[6]/text()").extract()[0].replace('%', '')
                 lhb_detail_item['net_value'] = tr.xpath(".//td[7]/text()").extract()[0]
                 yield lhb_detail_item
 
             # 指针自加1
             index += 1
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
