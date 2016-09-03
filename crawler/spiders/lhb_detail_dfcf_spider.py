@@ -1,7 +1,7 @@
 import json
 import logging
 import re
-
+import datetime
 from scrapy import Spider, Request
 
 from crawler.items.lhb_detail_dfcf_item import LhbDetailDfcfItem
@@ -20,9 +20,38 @@ class LhbDetailDfcfSpider(Spider):
         }
     }
     # start_urls = start_urls
-    start_urls = [
-        'http://data.eastmoney.com/DataCenter_V3/stock2016/TradeDetail/pagesize=200,page=1,sortRule=-1,sortType=,startDate=2015-07-06,endDate=2015-07-06,gpfw=0,js=var%20data_tab_1.html?rt=24545276',
-    ]
+    # start_urls = [
+    #     'http://data.eastmoney.com/DataCenter_V3/stock2016/TradeDetail/pagesize=200,page=1,sortRule=-1,sortType=,startDate=2015-07-06,endDate=2015-07-06,gpfw=0,js=var%20data_tab_1.html?rt=24545276',
+    # ]
+
+    def __init__(self, start_date=None, end_date=None, *args, **kwargs):
+
+        super().__init__(*args, **kwargs)
+
+        # 若输入参数均为None，则默认爬取当天
+        # 若输入的参数仅设置了其中一个值，则爬取该值设定的日期
+        # 若输入参数都设置了值，则爬取该区间范围的数据
+        if start_date is None and end_date is None:
+            today = datetime.date.today().strftime("%Y-%m-%d")
+            start_date = today
+            end_date = today
+        elif start_date is None:
+            start_date = end_date
+        elif end_date is None:
+            end_date = start_date
+
+        #  格式化输入参数
+        start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
+        end_date = datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
+
+        # 爬取参数设定的区间范围的数据
+        self.start_urls = []
+        url_format = 'http://data.eastmoney.com/DataCenter_V3/stock2016/TradeDetail/pagesize=200,page=1,sortRule=-1,sortType=,' \
+                     'startDate={0},endDate={0},gpfw=0,js=var%20data_tab_1.html?rt=24545276'
+        target_date = start_date
+        while target_date <= end_date:
+            self.start_urls.append(url_format.format(target_date.strftime('%Y-%m-%d')))
+            target_date = target_date + datetime.timedelta(1)
 
     def parse(self, response):
         """
@@ -54,7 +83,6 @@ class LhbDetailDfcfSpider(Spider):
             while page_index <= content['pages']:
                 next_page = "page=" + str(page_index)
                 next_page_url = re.sub(r'page=\d+', next_page, response.url)
-                logger.error(next_page_url)
                 page_index += 1
                 yield Request(next_page_url, callback=self.parse)
 
@@ -75,7 +103,6 @@ class LhbDetailDfcfSpider(Spider):
             url = detail_url_format.format(lhb_date, stock_id)
             new_url_set.add(url)
 
-        logger.warn('当前集合中数据个数：' + str(len(new_url_set)))
         # 遍历集合每个URL，生成后续访问链接
         for url in new_url_set:
             yield Request(url, callback=self.parse_detail)
@@ -137,8 +164,10 @@ class LhbDetailDfcfSpider(Spider):
                 yield lhb_detail_item
 
             # 上榜卖方席位处理
-            # 注意卖方表格中有一个汇总统计，所以卖方记录可能有6条，这里只取前5条
-            sell_list = table_sell[index].xpath(".//tbody/tr")[0:5]
+            # 注意卖方表格中有一个汇总统计，所以这里抛弃最后一条数据
+            sell_list = table_sell[index].xpath(".//tbody/tr")
+            sell_list_len = len(sell_list)
+            sell_list = sell_list[0:sell_list_len-1]
             for tr in sell_list:
                 lhb_detail_item = LhbDetailDfcfItem()
                 lhb_detail_item['lhb_date'] = lhb_date
