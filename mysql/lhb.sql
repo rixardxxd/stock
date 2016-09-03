@@ -47,9 +47,27 @@ CREATE TABLE `lhb_summary_dfcf` (
   `net_value_percent` decimal(10,2) DEFAULT NULL,
   `total_value_percent` decimal(10,2) DEFAULT NULL,
   `turnover_ratio` decimal(10,2) DEFAULT NULL,
-  `market_value` decimal(15,2) DEFAULT NULL,
   `reason` varchar(100) DEFAULT NULL,
   `process_date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `stock_id_lhb_date_reason` (`stock_id`,`lhb_date`,`reason`)
 ) ENGINE=InnoDB AUTO_INCREMENT=79840 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `lhb_detail_dfcf` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `lhb_date` date DEFAULT NULL,
+  `stock_id` char(6) DEFAULT NULL,
+  `stock_name` char(20) DEFAULT NULL,
+  `reason` varchar(100) DEFAULT NULL,
+  `yyb_name` varchar(100) DEFAULT NULL,
+  `buy_or_sell` char(1) DEFAULT NULL,
+  `buy_or_sell_order` char(1) DEFAULT NULL,
+  `buy_value` decimal(15,2) DEFAULT NULL,
+  `buy_value_percent` decimal(8,2) DEFAULT NULL,
+  `sell_value` decimal(15,2) DEFAULT NULL,
+  `sell_value_percent` decimal(8,2) DEFAULT NULL,
+  `net_value` decimal(15,2) DEFAULT NULL,
+  `process_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `stock_id_lhb_date_reason_yyb_name_buy_or_sell_order` (`stock_id`,`lhb_date`,`reason`,`yyb_name`,`buy_or_sell`,`buy_or_sell_order`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
