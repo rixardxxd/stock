@@ -1,0 +1,8 @@
+lhb-dfcf-processor:
+  environment:
+  - ENV=aws
+  ports:
+  - "5151"
+  image: index.alauda.cn/palmorg/lhb_dfcf_processor:latest
+  number: 1
+  size: S

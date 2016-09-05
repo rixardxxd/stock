@@ -21,6 +21,13 @@ function docker_build_lhb_dfcf_detail_crawler() {
   echo "Copied to clipboard. Please push to alauda.cn"
 }
 
+function docker_build_lhb_dfcf_crawler() {
+  go_stock
+  docker build -f dockerfile/lhb_dfcf_crawler/Dockerfile -t index.alauda.cn/palmorg/lhb_dfcf_crawler .
+  echo "docker push index.alauda.cn/palmorg/lhb_dfcf_crawler" | tr -d "\n" | pbcopy
+  echo "Copied to clipboard. Please push to alauda.cn"
+}
+
 function docker_build_lhb_dfcf_summary_processor() {
   go_stock
   docker build -f dockerfile/lhb_dfcf_summary_processor/Dockerfile -t index.alauda.cn/palmorg/lhb_dfcf_summary_processor .
@@ -34,7 +41,19 @@ function docker_build_lhb_dfcf_detail_processor() {
   echo "docker push index.alauda.cn/palmorg/lhb_dfcf_detail_processor" | tr -d "\n" | pbcopy
   echo "Copied to clipboard. Please push to alauda.cn"
 }
+
+function docker_build_lhb_dfcf_processor() {
+  go_stock
+  docker build -f dockerfile/lhb_dfcf_processor/Dockerfile -t index.alauda.cn/palmorg/lhb_dfcf_processor .
+  echo "docker push index.alauda.cn/palmorg/lhb_dfcf_processor" | tr -d "\n" | pbcopy
+  echo "Copied to clipboard. Please push to alauda.cn"
+}
 # Run
+
+function docker_run_lhb_dfcf_crawler() {
+  go_stock
+  docker run --name lhb_dfcf_crawler -it --rm --link redis:redis --link mysql:mysql -e ENV=local index.alauda.cn/palmorg/lhb_dfcf_crawler
+}
 
 function docker_run_lhb_dfcf_summary_crawler() {
   go_stock
@@ -44,6 +63,11 @@ function docker_run_lhb_dfcf_summary_crawler() {
 function docker_run_lhb_dfcf_detail_crawler() {
   go_stock
   docker run --name lhb_dfcf_detail_crawler -it --rm --link redis:redis --link mysql:mysql -e ENV=local index.alauda.cn/palmorg/lhb_dfcf_detail_crawler
+}
+
+function docker_run_lhb_dfcf_processor() {
+  go_stock
+  docker run --name lhb_dfcf_processor -it --rm --link redis:redis --link mysql:mysql -e ENV=local index.alauda.cn/palmorg/lhb_dfcf_processor
 }
 
 function docker_run_lhb_dfcf_summary_processor() {
