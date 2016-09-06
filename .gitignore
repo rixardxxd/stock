@@ -106,3 +106,4 @@ redis_log.txt
 .elasticbeanstalk/
 
 process_items.py
+data
