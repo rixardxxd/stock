@@ -88,7 +88,6 @@ class LhbDfcfProcessor(Processor):
         """
         Process items from a redis queue.
         """
-
         processed_item_number = 0
 
         while processed_item_number < self.limit:
@@ -101,6 +100,7 @@ class LhbDfcfProcessor(Processor):
 
         self.database_instance.close_db()
         self.session.close()
+        self.database_instance = None
 
     def setup_mysql(self):
 
@@ -114,7 +114,6 @@ class LhbDfcfProcessor(Processor):
         super().setup_mysql()
         self.database_instance = LhbDB(self.mysql_args)
         self.database_instance.connect_db()
-
 
 if __name__ == '__main__':
     lhb_processor = LhbDfcfProcessor()

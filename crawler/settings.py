@@ -63,7 +63,7 @@ RETRY_TIMES = 10
 RETRY_HTTP_CODES = [500, 503, 504, 400, 403, 404, 408]
 
 DOWNLOADER_MIDDLEWARES = {
-    'scrapy.contrib.downloadermiddleware.retry.RetryMiddleware': 90,
+    'scrapy.downloadermiddlewares.retry.RetryMiddleware': 90,
 }
 
 # Enable or disable extensions
