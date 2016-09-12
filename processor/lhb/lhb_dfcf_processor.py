@@ -77,8 +77,13 @@ class LhbDfcfProcessor(Processor):
                            get_current_timestamp("Asia/Shanghai"))
 
             try:
-                self.database_instance.insert_detail_info_dfcf(detail_row)
-                self.database_instance.insert_summary_info_dfcf(summary_row)
+                if not self.database_instance.is_detail_info_existed(item['stock_id'], item['lhb_date'], item['reason'],
+                                                                     item['yyb_name'], item['buy_or_sell'],
+                                                                     item['buy_or_sell_order']):
+                    self.database_instance.insert_detail_info_dfcf(detail_row)
+                if not self.database_instance.is_summary_info_existed(summary_item['stock_id'],
+                                                                      summary_item['lhb_date'], summary_item['reason']):
+                    self.database_instance.insert_summary_info_dfcf(summary_row)
             except mysql.connector.errors.IntegrityError as e:
                 self.logger.info(item)
                 self.logger.error(e)
@@ -114,6 +119,7 @@ class LhbDfcfProcessor(Processor):
         super().setup_mysql()
         self.database_instance = LhbDB(self.mysql_args)
         self.database_instance.connect_db()
+
 
 if __name__ == '__main__':
     lhb_processor = LhbDfcfProcessor()
