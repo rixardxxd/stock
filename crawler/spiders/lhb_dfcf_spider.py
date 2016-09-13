@@ -22,6 +22,7 @@ class LhbDfcfSpider(Spider):
             'my_scrapy_redis.pipelines.RedisPipeline': 400
         }
     }
+
     # start_urls = start_urls
     # start_urls = [
     #     'http://data.eastmoney.com/DataCenter_V3/stock2016/TradeDetail/pagesize=200,page=1,sortRule=-1,sortType=,startDate=2015-07-06,endDate=2015-07-06,gpfw=0,js=var%20data_tab_1.html?rt=24545276',
@@ -43,7 +44,7 @@ class LhbDfcfSpider(Spider):
         elif end_date is None:
             end_date = start_date
 
-        #  格式化输入参数
+        # 格式化输入参数
         start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
         end_date = datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
 
@@ -183,7 +184,7 @@ class LhbDfcfSpider(Spider):
             # 注意卖方表格中有一个汇总统计，所以这里抛弃最后一条数据
             sell_list = table_sell[index].xpath(".//tbody/tr")
             sell_list_len = len(sell_list)
-            sell_list = sell_list[0:sell_list_len-1]
+            sell_list = sell_list[0:sell_list_len - 1]
             for tr in sell_list:
                 lhb_detail_item = LhbDfcfItem()
                 lhb_detail_item['lhb_date'] = lhb_date

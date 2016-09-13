@@ -42,6 +42,16 @@ class MySQLdb:
             self.logger.info('Insertion succeed! Timestamp: {0} {1}'
                              .format("UTC+08:00", get_current_timestamp("Asia/Shanghai")))
             return True
+        except mysql.connector.errors.OperationalError as err:
+            self.logger.exception('Insertion failed. Exception: {0}. Timestamp: {1} {2}'
+                                  .format(err, "UTC+08:00", get_current_timestamp("Asia/Shanghai")))
+            self.logger.info('====== Reconnet to mysql ======')
+            self.connect_db()
+            self.cursor.execute(insert_ddl, insert_data)
+            self.connection.commit()
+            self.logger.info('Insertion succeed! Timestamp: {0} {1}'
+                             .format("UTC+08:00", get_current_timestamp("Asia/Shanghai")))
+
         except mysql.connector.Error as err:
             self.logger.exception('Insertion failed. Exception: {0}. Timestamp: {1} {2}'
                                   .format(err, "UTC+08:00", get_current_timestamp("Asia/Shanghai")))

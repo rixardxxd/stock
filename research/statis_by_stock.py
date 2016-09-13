@@ -1,4 +1,3 @@
-import pandas as pd
 import pandas.io.sql as sql
 from research.lhb_db_connection import get_db_connection
 
