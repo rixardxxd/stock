@@ -47,7 +47,7 @@ def statis(x):
 con = get_db_connection()
 
 # 获取明细表中所有数据
-df = sql.read_sql("select * from lhb_detail_dfcf where lhb_date >= '2016-09-02' and lhb_date <= '2016-09-02'",  con)
+df = sql.read_sql("select * from lhb_detail_dfcf where lhb_date >= '2014-09-02' and lhb_date <= '2016-09-02'",  con)
 
 # 某些挖回来的数据中，营业部名字列需要进一步处理，包括：
 # 1、营业部名字最后有的缺失了“部”字
